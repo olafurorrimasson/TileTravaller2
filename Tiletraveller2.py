@@ -14,7 +14,7 @@ def move(direction, col, row):
         col += 1
     elif direction == WEST:
         col -= 1
-    return(col, row)    
+    return(col, row)
 
 def is_victory(col, row):
     ''' Return true if player is in the victory cell '''
@@ -36,7 +36,7 @@ def print_directions(directions_str):
             print("(W)est", end='')
         first = False
     print(".")
-        
+
 def find_directions(col, row):
     ''' Returns valid directions as a string given the supplied location '''
     if col == 1 and row == 1:   # (1,1)
@@ -63,33 +63,33 @@ def play_one_move(col, row, valid_directions):
     victory = False
     direction = input("Direction: ")
     direction = direction.lower()
-    
+
     if not direction in valid_directions:
         print("Not a valid direction!")
     else:
         col, row = move(direction, col, row)
         victory = is_victory(col, row)
-    return victory, col, row
+    return victory, col, row, direction
 
-def levers_in_room(col,row,coins):
-    if row == 2 and col == 1:
-        coins =pull_levers(coins)
-    elif row == 2 and col == 2:
-        coins =pull_levers(coins)
-    elif row == 3 and col == 2:
-        coins =pull_levers(coins)
-    elif row == 2 and col == 3:
-        coins =pull_levers(coins)
-    
+def lever_in_room(col, row, coins, valid_directions, direction):
+    if direction in valid_directions:
+        if row == 2 and col == 1:
+            coins = pull_lever(coins)
+        elif row == 2 and col == 2:
+            coins = pull_lever(coins)
+        elif row == 2 and col == 3:
+            coins = pull_lever(coins)
+        elif row == 3 and col == 2:
+            coins = pull_lever(coins)
+
     return coins
 
-def pull_levers(coins):
-    pull=input("Pull a lever (y/n): ")
-    if pull  == "y" or pull == "Y":
+def pull_lever(coins):
+    pull = input("Pull a lever (y/n): ")
+    if pull == "Y" or pull == "y":
         coins +=1
-        print("You received 1 coin, your total is now {:s}".format(str(coins)))
+        print("You received 1 coin, your total is now {}.".format(str(coins)))
     return coins
-
 
 # The main program starts here
 victory = False
@@ -98,7 +98,9 @@ col = 1
 coins = 0
 
 while not victory:
+
     valid_directions = find_directions(col, row)
     print_directions(valid_directions)
-    victory, col, row = play_one_move(col, row, valid_directions)
-print("Victory!")
+    victory, col, row, direction = play_one_move(col, row, valid_directions)
+    coins = lever_in_room(col, row, coins, valid_directions, direction)
+print("Victory! Total coins {}.".format(str(coins)))
