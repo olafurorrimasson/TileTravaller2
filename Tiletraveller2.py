@@ -71,10 +71,31 @@ def play_one_move(col, row, valid_directions):
         victory = is_victory(col, row)
     return victory, col, row
 
+def levers_in_room(col,row,coins):
+    if row == 2 and col == 1:
+        coins =pull_levers(coins)
+    elif row == 2 and col == 2:
+        coins =pull_levers(coins)
+    elif row == 3 and col == 2:
+        coins =pull_levers(coins)
+    elif row == 2 and col == 3:
+        coins =pull_levers(coins)
+    
+    return coins
+
+def pull_levers(coins):
+    pull=input("Pull a lever (y/n): ")
+    if pull  == "y" or pull == "Y":
+        coins +=1
+        print("You received 1 coin, your total is now {:s}".format(str(coins)))
+    return coins
+
+
 # The main program starts here
 victory = False
 row = 1
 col = 1
+coins = 0
 
 while not victory:
     valid_directions = find_directions(col, row)
