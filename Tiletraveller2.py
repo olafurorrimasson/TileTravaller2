@@ -92,15 +92,23 @@ def pull_lever(coins):
     return coins
 
 # The main program starts here
-victory = False
-row = 1
-col = 1
-coins = 0
+def play():
+    victory = False
+    row = 1
+    col = 1
+    coins = 0
 
-while not victory:
+    while not victory:
+        valid_directions = find_directions(col, row)
+        print_directions(valid_directions)
+        victory, col, row, direction = play_one_move(col, row, valid_directions)
+        coins = lever_in_room(col, row, coins, valid_directions, direction)
+    print("Victory! Total coins {}.".format(str(coins)))
 
-    valid_directions = find_directions(col, row)
-    print_directions(valid_directions)
-    victory, col, row, direction = play_one_move(col, row, valid_directions)
-    coins = lever_in_room(col, row, coins, valid_directions, direction)
-print("Victory! Total coins {}.".format(str(coins)))
+keep_playing = True
+while keep_playing:
+    
+    play()
+    play_again = input("Play again (y/n): ")
+    if play_again == "n" or play_again == "N":
+        keep_playing = False
